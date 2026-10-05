@@ -1,73 +1,73 @@
 [
   {
     "id": "status-allow",
-    "description": "Ofarlig statuskontroll svarar inom 500 ms",
+    "description": "A harmless status check responds within 500 ms",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git status"}},
     "expected": {"decision": "allow", "max_duration_ms": 500}
   },
   {
     "id": "log-allow",
-    "description": "Ofarlig läsning av historik",
+    "description": "Reading Git history is allowed",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git log --oneline"}},
     "expected": {"decision": "allow"}
   },
   {
     "id": "grep-allow",
-    "description": "Farlig text i ett grep-argument är inte ett Git-kommando",
-    "stdin": {"tool_name": "Bash", "tool_input": {"command": "grep \"rm -rf\" anteckningar.md"}},
+    "description": "Dangerous-looking text in a grep argument is not a Git command",
+    "stdin": {"tool_name": "Bash", "tool_input": {"command": "grep \"rm -rf\" notes.md"}},
     "expected": {"decision": "allow"}
   },
   {
     "id": "reset-deny",
-    "description": "Direkt git reset stoppas",
+    "description": "A direct git reset is denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git reset --hard HEAD~1"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "rebase-deny",
-    "description": "Rebase stoppas",
+    "description": "Rebase is denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git rebase -i HEAD~3"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "amend-deny",
-    "description": "Commit amend stoppas",
+    "description": "Commit amend is denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git commit --amend --no-edit"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "force-push-deny",
-    "description": "Force push stoppas",
+    "description": "Force push is denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git push --force origin main"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "global-option-reset-deny",
-    "description": "Reset efter en global Git-option stoppas",
+    "description": "Reset after a global Git option is denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git -c color.ui=false reset --hard HEAD~1"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "alias-reset-bypass",
-    "description": "Git-alias som kör reset ska stoppas även utan synligt reset-subkommando",
+    "description": "A Git alias that runs reset should be denied without a visible reset subcommand",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "git -c alias.undo=reset undo --hard HEAD~1"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "tamper-hooks-config",
-    "description": "Försök att skriva över säkerhetskonfigurationen ska stoppas",
+    "description": "An attempt to overwrite the hook configuration should be denied",
     "stdin": {"tool_name": "Bash", "tool_input": {"command": "printf '{}' > .codex/hooks.json"}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "malformed-json",
-    "description": "Trasig JSON ger deny med reason utan krasch",
+    "description": "Malformed JSON produces deny with a reason and does not crash",
     "stdin": "{\"tool_name\": \"Bash\", \"tool_input\": ",
     "expected": {"decision": "deny", "reason_nonempty": true}
   },
   {
     "id": "missing-command",
-    "description": "Saknat kommando ger deny med reason",
+    "description": "A missing command produces deny with a reason",
     "stdin": {"tool_name": "Bash", "tool_input": {}},
     "expected": {"decision": "deny", "reason_nonempty": true}
   }

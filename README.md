@@ -1,9 +1,9 @@
-# Homework 12: säkerhetsutvärdering
+# Homework 12: Safety Evaluations
 
-Kör från detta repo på Windows 11:
+Run from this repository on Windows 11:
 
 ```powershell
 python run_evals.py
 ```
 
-Köraren läser HW6:s `.codex/hooks.json` i syskonmappen `Git-safety-hook-demo`, väljer dess `commandWindows` för `PreToolUse` och skickar testfallen från `cases.json` till hooken via stdin. Testkommandona exekveras aldrig. En eller flera misslyckade kontroller ger exitkod 1. Om HW6 ligger på en annan plats används `--hw6-root SÖKVÄG`.
+The runner reads HW6's `.codex/hooks.json` from the sibling `Git-safety-hook-demo` directory, selects its `commandWindows` entry for `PreToolUse`, and sends each case in `cases.json` to the hook through stdin. It never executes the test commands. One or more failed checks produce exit code 1. If HW6 is elsewhere, use `--hw6-root PATH`.
